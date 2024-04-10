@@ -1,5 +1,7 @@
 package com.example;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -51,13 +53,40 @@ public class DemoqaTest {
     }
 
     @org.testng.annotations.Test
-    public void checkbox(){
-        driver.get(baseURL+"checkbox");
-        WebElement checkbox = driver.findElement(By.cssSelector("#tree-node-home"));
-        checkbox.click();
-        WebElement result = driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[2]/div[2]/div[2]/span[1]"));
-        Assert.assertEquals(result.getText(), "You have selected :");
+    public void login(){
+        driver.get(baseURL+"login");
+        WebElement loginName = driver.findElement(By.cssSelector("#userName"));
+        loginName.sendKeys("admin");
+        WebElement loginPassword = driver.findElement(By.cssSelector("#password"));
+        loginPassword.sendKeys("admin");
+        WebElement loginButton = driver.findElement(By.id("login"));
+        loginButton.click();
+        Assert.assertEquals(driver.getCurrentUrl(), baseURL+"login");
     }
+
+    @org.testng.annotations.Test
+    public void radioButton(){
+        driver.get(baseURL+"radio-button");
+        WebElement radioButton = driver.findElement(By.id("yesRadio"));
+        radioButton.click();
+        Assert.assertTrue(radioButton.isSelected());
+    }
+
+    @org.testng.annotations.Test
+    public void books(){
+        driver.get(baseURL+"books");
+        WebElement rtTable = driver.findElement(By.className("rt-table"));
+        List<WebElement> links = rtTable.findElements(By.tagName("a"));
+        Boolean allLinksExist = true;
+        for (WebElement link : links) {
+            String url = link.getAttribute("href");
+            if (url == null || url.isEmpty()) {
+                allLinksExist = false;
+            }
+        }
+        Assert.assertTrue(allLinksExist);
+    }
+
 
 
     @AfterTest
